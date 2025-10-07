@@ -20,6 +20,8 @@ export default function Chat() {
     setMessages((prev) => [...prev, newMessage]);
   };
 
+
+
   return (
     <div className="flex flex-col h-full bg-white">
       <div className="flex-1 overflow-y-auto p-4">
