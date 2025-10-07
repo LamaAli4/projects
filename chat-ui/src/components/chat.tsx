@@ -1,26 +1,37 @@
 import { useState } from "react";
 import type { Message } from "../types/message";
 import ChatInput from "./chat-input";
+import { systemMessages } from "../mock/system-messages";
 
 export default function Chat() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
       sender: "system",
-      text: "Hi there! How can I help you today?",
+      text: "Hi there! How can I help you today?", 
     },
   ]);
 
   const handleSend = (text: string) => {
-    const newMessage: Message = {
+    const userMessage: Message = {
       id: Date.now(),
       sender: "user",
       text,
     };
-    setMessages((prev) => [...prev, newMessage]);
+    setMessages((prev) => [...prev, userMessage]);
+
+    setTimeout(() => {
+      const randomIndex = Math.floor(Math.random() * systemMessages.length);
+      const randomReply = systemMessages[randomIndex];
+
+      const systemReply: Message = {
+        ...randomReply,
+        id: Date.now() + 1, 
+      };
+
+      setMessages((prev) => [...prev, systemReply]);
+    }, 1000);
   };
-
-
 
   return (
     <div className="flex flex-col h-full bg-white">
