@@ -2,8 +2,7 @@ import { translations } from "./translations.js";
 
 export function languageSwitcher() {
   const langToggle = document.getElementById("lang-toggle");
-  let currentLang =
-    localStorage.getItem("lang");
+  let currentLang = localStorage.getItem("lang") || "ar";
 
   const updateLanguage = () => {
     const t = translations[currentLang];
