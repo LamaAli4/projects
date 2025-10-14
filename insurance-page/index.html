@@ -3,20 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Responsive Header</title>
+    <title data-i18n="title">Insurance</title>
     <link rel="stylesheet" href="style.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
   </head>
+
   <body>
     <!-- Header Section -->
     <header class="header">
       <div class="container">
         <div class="header-content">
           <div class="logo">
-            <span class="logo-text">شركة التأمين</span>
+            <span class="logo-text" data-i18n="logo"></span>
           </div>
 
           <div class="menu-toggle" id="menu-toggle">
@@ -25,10 +26,10 @@
 
           <nav class="navigation" id="nav">
             <ul class="nav-list">
-              <li><a href="#home">الرئيسية</a></li>
-              <li><a href="#services">خدماتنا</a></li>
-              <li><a href="#about">من نحن</a></li>
-              <li><a href="#contact">اتصل بنا</a></li>
+              <li><a href="#home" data-i18n="home"></a></li>
+              <li><a href="#services" data-i18n="services"></a></li>
+              <li><a href="#about" data-i18n="about"></a></li>
+              <li><a href="#contact" data-i18n="contact"></a></li>
             </ul>
           </nav>
 
@@ -36,11 +37,14 @@
             <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
             <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
             <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="#" id="lang-toggle" data-i18n-title="switch">
+              <i class="fa-solid fa-globe"></i>
+            </a>
           </div>
         </div>
       </div>
     </header>
 
-    <script src="index.js"></script>
+    <script type="module" src="js/index.js"></script>
   </body>
 </html>
