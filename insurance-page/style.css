@@ -1,0 +1,136 @@
+:root {
+  --primary: #48277f;
+  --accent: #fd7e14;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Header */
+.header {
+  background: linear-gradient(0deg, #fdfdfd 0%, #ffffff 100%);
+  color: black;
+  padding: 1rem 0;
+  box-shadow: 0 2px 10px rgba(50, 50, 50, 0.1);
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo img {
+  width: 40px;
+  height: 40px;
+}
+
+.logo-text {
+  color: var(--primary);
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.navigation ul {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+}
+
+.navigation a {
+  color: var(--primary);
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  text-underline-offset: 4px;
+  transition: color 0.3s ease, text-decoration-color 0.4s ease;
+}
+
+.navigation a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+}
+
+.social-icons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.social-icons a {
+  color: var(--primary);
+  text-decoration: none;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.3s ease;
+}
+
+.social-icons a:hover {
+  color: var(--accent);
+}
+
+.menu-toggle {
+  display: none;
+  font-size: 1.5rem;
+  color: var(--primary);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.menu-toggle:hover {
+  color: var(--accent);
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  .navigation {
+    width: 100%;
+    display: none;
+    flex-basis: 100%;
+  }
+
+  .navigation.active {
+    display: block;
+  }
+
+  .navigation ul {
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 0;
+    gap: 1rem;
+    border-top: 1px solid #ddd;
+  }
+
+  .social-icons {
+    display: none;
+  }
+
+  .navigation.active + .social-icons {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+  }
+}
