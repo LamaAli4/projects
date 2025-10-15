@@ -35,6 +35,12 @@ export const translations = {
       middle: "الوسطى",
     },
 
+    footer_about:
+      "نحن نقدم أفضل حلول التأمين والدعم لعملائنا، لضمان الأمان والثقة للجميع.",
+    download_app: "حمّل تطبيقنا",
+    follow_us: "تابعنا على",
+    rights: "© 2025 شركة التأمين. جميع الحقوق محفوظة.",
+
     alerts: {
       required: "جميع الحقول مطلوبة",
       success: "تم إرسال الطلب بنجاح!",
@@ -76,6 +82,12 @@ export const translations = {
       north: "North Gaza",
       middle: "Central Area",
     },
+
+    footer_about:
+      "We provide the best insurance solutions and support for our clients, ensuring safety and trust for everyone.",
+    download_app: "Download Our App",
+    follow_us: "Follow Us",
+    rights: "© 2025 Insurance. All rights reserved.",
 
     alerts: {
       required: "All fields are required",
