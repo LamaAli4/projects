@@ -17,6 +17,11 @@
 
 /* Header */
 .header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100%;
   background: linear-gradient(0deg, #fdfdfd 0%, #ffffff 100%);
   color: black;
   padding: 1rem 0;
@@ -140,7 +145,7 @@
 .hero-section {
   position: relative;
   padding: 3rem 1rem;
-  margin-top: 1.5rem;
+  margin-top: 6rem;
   border-radius: 1rem;
   text-align: center;
   background: linear-gradient(135deg, #786d8d 0%, #512698 50%, #3f2073 100%);
@@ -244,8 +249,8 @@ html[dir="ltr"] textarea {
   flex-direction: column;
 }
 .form-block:first-of-type .form-group input {
-  width: 60%; 
-  max-width: 450px; 
+  width: 60%;
+  max-width: 450px;
 }
 label {
   color: #9f4d0a;
@@ -361,5 +366,8 @@ html[dir="rtl"] .file-upload {
     font-size: 0.95rem;
   }
 }
-
 /* Form Section */
+
+/* Footer */
+
+/* Footer */

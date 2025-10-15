@@ -5,7 +5,7 @@ import { translations } from "./translations.js";
 menuToggle();
 languageSwitcher();
 
-const form = document.getElementById("join-form");
+const form = document.getElementById("form");
 const fileInput = document.getElementById("cv");
 const fileNameSpan = document.querySelector(".file-name");
 

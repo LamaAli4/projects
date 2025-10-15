@@ -43,7 +43,7 @@ export const translations = {
 
   en: {
     dir: "ltr",
-    logo: "Insurance Company",
+    logo: "Insurance",
     home: "Home",
     services: "Services",
     about: "About Us",
