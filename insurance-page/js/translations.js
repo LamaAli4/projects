@@ -19,12 +19,13 @@ export const translations = {
     contact_info: "معلومات العنوان والاتصال",
     education_info: "البيانات التعليمية والمهنية",
 
-    fullname_label: "الاسم الرباعي",
-    phone_label: "رقم الهاتف الخلوي",
-    location_label: "مكان الإقامة",
-    experience_label: "عدد سنوات الخبرة",
-    cv_label: "إرفاق السيرة الذاتية (CV)",
-    location_placeholder: "اختر مكان الإقامة",
+    location_placeholder: "مكان الإقامة*",
+    fullname_placeholder: "الاسم رباعي*",
+    phone_placeholder: "رقم الهاتف الخلوي*",
+    experience_placeholder: "عدد سنوات الخبرة *",
+    cv_placeholder: "الرجاء إرفاق السيرة الذاتية",
+
+    submit: "إرسال الطلب",
 
     location_options: {
       gaza: "غزة",
@@ -34,7 +35,10 @@ export const translations = {
       middle: "الوسطى",
     },
 
-    submit: "إرسال الطلب",
+    alerts: {
+      required: "جميع الحقول مطلوبة",
+      success: "تم إرسال الطلب بنجاح!",
+    },
   },
 
   en: {
@@ -57,12 +61,13 @@ export const translations = {
     contact_info: "Contact & Address Information",
     education_info: "Educational and Professional Details",
 
-    fullname_label: "Full Name",
-    phone_label: "Mobile Number",
-    location_label: "Place of Residence",
-    experience_label: "Years of Experience",
-    cv_label: "Attach Resume (CV)",
-    location_placeholder: "Select Place of Residence",
+    location_placeholder: "Place of Residence*",
+    fullname_placeholder: "Full Name*",
+    phone_placeholder: "Mobile Number*",
+    experience_placeholder: "Years of Experience *",
+    cv_placeholder: "Please attach your CV",
+
+    submit: "Submit",
 
     location_options: {
       gaza: "Gaza",
@@ -72,6 +77,9 @@ export const translations = {
       middle: "Central Area",
     },
 
-    submit: "Submit Application",
+    alerts: {
+      required: "All fields are required",
+      success: "Your application has been submitted successfully!",
+    },
   },
 };
