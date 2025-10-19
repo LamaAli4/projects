@@ -4,6 +4,7 @@ export interface NavItem {
   label: string;
   path: string;
   icon?: React.ComponentType<{ className?: string }>;
+  children?: NavItem[];
 }
 
 export const mainNav: NavItem[] = [
