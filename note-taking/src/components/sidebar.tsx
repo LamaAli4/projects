@@ -1,7 +1,8 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { mainNav } from "@/layouts/nav-config";
 import { Tag, X } from "lucide-react";
+import { useNotes } from "@/context/notes-context";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -11,19 +12,18 @@ interface SidebarProps {
 export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
   const location = useLocation();
   const path = location.pathname;
+  const searchParams = new URLSearchParams(location.search);
+  const activeTag = searchParams.get("tag");
+  const navigate = useNavigate();
 
-  const tags = [
-    "Cooking",
-    "Dev",
-    "Fitness",
-    "Health",
-    "Personal",
-    "React",
-    "Recipes",
-    "Shopping",
-    "Travel",
-    "TypeScript",
-  ];
+  const { notes } = useNotes();
+
+  const tags = Array.from(new Set(notes.flatMap((note) => note.tags))).sort();
+
+  const handleTagClick = (tag: string) => {
+    navigate(`/notes?tag=${tag}`);
+    setIsOpen(false);
+  };
 
   return (
     <>
@@ -77,20 +77,38 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
           <h2 className="text-xs font-medium text-muted-foreground px-3 mb-1">
             Tags
           </h2>
-          <ul className="flex flex-col gap-1">
-            {tags.map((tag) => (
-              <li key={tag}>
-                <button
-                  className={cn(
-                    "flex items-center gap-2 px-3 py-1.5 rounded-md text-sm transition-colors text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground w-full text-left"
-                  )}
-                >
-                  <Tag className="w-4 h-4 opacity-70" />
-                  {tag}
-                </button>
-              </li>
-            ))}
-          </ul>
+
+          {tags.length > 0 ? (
+            <ul className="flex flex-col gap-1">
+              {tags.map((tag) => (
+                <li key={tag}>
+                  <button
+                    onClick={() => handleTagClick(tag)}
+                    className={cn(
+                      "flex items-center gap-2 px-3 py-1.5 rounded-md text-sm transition-colors w-full text-left cursor-pointer",
+                      activeTag === tag
+                        ? "bg-sidebar-accent text-sidebar-accent-foreground ring-1 ring-sidebar-ring"
+                        : "text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                    )}
+                  >
+                    <Tag
+                      className={cn(
+                        "w-4 h-4 opacity-70",
+                        activeTag === tag
+                          ? "text-sidebar-accent-foreground"
+                          : ""
+                      )}
+                    />
+                    {tag}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-xs text-muted-foreground px-3 mt-2">
+              No tags yet
+            </p>
+          )}
         </div>
       </aside>
 

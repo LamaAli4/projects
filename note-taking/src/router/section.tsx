@@ -12,6 +12,7 @@ export const RoutesSection = [
     children: [
       { index: true, element: <AllNotes /> },
       { path: "archived", element: <ArchivedNotes /> },
+      { path: "notes", element: <AllNotes /> },
     ],
   },
   { path: "*", element: <NotFound /> },

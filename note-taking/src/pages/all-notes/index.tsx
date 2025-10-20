@@ -1,21 +1,27 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Plus, Tag, Clock, Trash2, Archive } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { Notes } from "@/types";
 import NoteModal from "./note-model";
 import { Button } from "@/components/ui/button";
-import { getNotes, saveNotes } from "@/utils/storage-notes";
+import { useNotes } from "@/context/notes-context";
+import type { Notes } from "@/types";
 
 export default function AllNotes() {
+  const { notes, setNotes } = useNotes();
   const [selectedNote, setSelectedNote] = useState<number | null>(null);
   const [showModal, setShowModal] = useState(false);
-  const [notes, setNotes] = useState<Notes[]>(() => getNotes());
+  const [searchParams] = useSearchParams();
 
-  useEffect(() => {
-    saveNotes(notes);
-  }, [notes]);
+  const tagFilter = searchParams.get("tag");
 
-  const selected = notes.find((n) => n.id === selectedNote);
+  const filteredNotes = tagFilter
+    ? notes.filter((note) =>
+        note.tags.some((t) => t.toLowerCase() === tagFilter.toLowerCase())
+      )
+    : notes;
+
+  const selected = filteredNotes.find((n) => n.id === selectedNote);
 
   const handleAddNote = (note: Notes) => {
     const updatedNotes = [...notes, note];
@@ -35,26 +41,27 @@ export default function AllNotes() {
       <aside className="md:col-span-2 lg:col-span-2 border-r pr-4">
         <Button
           onClick={() => setShowModal(true)}
-          className="w-full mb-4 py-6 text-lg bg-primary text-primary-foreground rounded-md flex items-center justify-center
-          cursor-pointer gap-2 hover:opacity-90"
+          className="w-full mb-4 py-6 text-lg bg-primary text-primary-foreground rounded-md flex items-center justify-center cursor-pointer gap-2 hover:opacity-90"
         >
           <Plus className="w-4 h-4" /> Create New Note
         </Button>
 
-        {notes.length === 0 ? (
-          <p className="text-muted-foreground text-center mt-10">
-            No notes yet. Click “Create New Note” to get started!
+        {filteredNotes.length === 0 ? (
+          <p className="text-muted-foreground text-center mt-10 ">
+            {tagFilter
+              ? `No notes found for "${tagFilter}" tag`
+              : "No notes yet. Click “Create New Note” to get started!"}
           </p>
         ) : (
           <div className="flex flex-col gap-3">
-            {notes.map((note) => (
+            {filteredNotes.map((note) => (
               <button
                 key={note.id}
                 onClick={() => setSelectedNote(note.id)}
                 className={cn(
-                  "text-left p-3 rounded-md transition border hover:bg-accent",
+                  "text-left p-3 rounded-md transition border hover:bg-accent cursor-pointer",
                   selectedNote === note.id
-                    ? "border-primary bg-muted"
+                    ? "border-primary bg-accent"
                     : "border-transparent"
                 )}
               >
@@ -69,7 +76,7 @@ export default function AllNotes() {
                     </span>
                   ))}
                 </div>
-                <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
+                <p className="text-xs text-muted-foreground mt-3 flex items-center gap-1">
                   <Clock className="w-3 h-3" />
                   {note.date}
                 </p>
