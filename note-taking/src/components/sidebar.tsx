@@ -29,7 +29,7 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
     <>
       <aside
         className={cn(
-          "fixed sm:static top-0 left-0 min-h-screen w-64 border-r bg-[var(--sidebar)] text-[var(--sidebar-foreground)] border-[var(--sidebar-border)] flex flex-col p-4 transform transition-transform duration-300 ease-in-out z-40",
+          "fixed sm:sticky sm:top-0 sm:h-screen sm:overflow-y-auto left-0 min-h-screen w-64 border-r bg-[var(--sidebar)] text-[var(--sidebar-foreground)] border-[var(--sidebar-border)] flex flex-col p-4 transform transition-transform duration-300 ease-in-out z-40",
           isOpen ? "translate-x-0" : "-translate-x-full sm:translate-x-0"
         )}
       >

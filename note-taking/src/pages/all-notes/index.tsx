@@ -194,7 +194,7 @@ export default function AllNotes() {
               ))}
             </div>
 
-            <p className="text-sm whitespace-pre-line leading-relaxed text-muted-foreground">
+            <p className="text-sm whitespace-pre-line leading-relaxed text-muted-foreground break-words">
               {selected.content}
             </p>
           </>
