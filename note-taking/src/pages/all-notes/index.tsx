@@ -52,16 +52,12 @@ export default function AllNotes() {
     setSelectedNote(null);
   };
 
-  const isMobileOrTablet =
-    typeof window !== "undefined" && window.innerWidth < 1024; // أقل من lg
-
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-4 h-full relative">
-      {/* ✅ Sidebar: notes list */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 h-full relative transition-all">
       <aside
         className={cn(
           "md:col-span-2 lg:col-span-2 border-r pr-4 transition-all duration-300",
-          selected && isMobileOrTablet ? "hidden" : "block"
+          selected ? "hidden lg:block" : "block"
         )}
       >
         {tagFilter && (
@@ -122,46 +118,44 @@ export default function AllNotes() {
         )}
       </aside>
 
-      {/* ✅ Note details */}
       <main
         className={cn(
           "md:col-span-2 lg:col-span-3 p-4 overflow-y-auto",
-          selected && isMobileOrTablet ? "col-span-1" : ""
+          selected ? "col-span-1 block" : "hidden md:block"
         )}
       >
         {selected ? (
           <>
-            {/* 🔙 Header actions for mobile */}
-            {isMobileOrTablet && (
-              <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-4 lg:hidden sticky top-0 bg-background py-2 border-b">
+              <button
+                onClick={handleGoBack}
+                className="p-2 rounded-md hover:bg-accent"
+                aria-label="Go back"
+              >
+                <ArrowLeft className="w-5 h-5" />
+              </button>
+
+              <div className="flex items-center gap-2">
                 <button
-                  onClick={handleGoBack}
+                  onClick={() => handleArchiveNote(selected.id)}
                   className="p-2 rounded-md hover:bg-accent"
-                  aria-label="Go back"
+                  aria-label="Archive"
                 >
-                  <ArrowLeft className="w-5 h-5" />
+                  <Archive className="w-5 h-5" />
                 </button>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => handleArchiveNote(selected.id)}
-                    className="p-2 rounded-md hover:bg-accent"
-                    aria-label="Archive"
-                  >
-                    <Archive className="w-5 h-5" />
-                  </button>
-                  <button
-                    onClick={() => handleDeleteNote(selected.id)}
-                    className="p-2 rounded-md text-destructive hover:bg-destructive/10 border border-destructive/30"
-                    aria-label="Delete"
-                  >
-                    <Trash2 className="w-5 h-5" />
-                  </button>
-                </div>
+                <button
+                  onClick={() => handleDeleteNote(selected.id)}
+                  className="p-2 rounded-md text-destructive hover:bg-destructive/10 border border-destructive/30"
+                  aria-label="Delete"
+                >
+                  <Trash2 className="w-5 h-5" />
+                </button>
               </div>
-            )}
+            </div>
 
-            <h2 className="text-2xl font-semibold mb-2">{selected.title}</h2>
+            <h2 className="text-xl sm:text-2xl font-semibold mb-2 break-words">
+              {selected.title}
+            </h2>
 
             <div className="flex gap-2 mb-4 flex-wrap">
               {selected.tags.map((tag) => (
@@ -185,7 +179,6 @@ export default function AllNotes() {
         )}
       </main>
 
-      {/* ✅ Sidebar actions (desktop only) */}
       <aside className="hidden lg:flex flex-col gap-3 items-stretch justify-start p-4 border-l">
         {selected && (
           <>

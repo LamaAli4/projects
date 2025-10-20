@@ -44,6 +44,13 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
+@custom-media --xs (max-width: 480px);
+@custom-media --sm (max-width: 640px);
+@custom-media --md (max-width: 768px);
+@custom-media --lg (max-width: 1024px);
+@custom-media --xl (max-width: 1280px);
+@custom-media --2xl (max-width: 1536px);
+
 :root {
   --font-poppins: "Poppins", ui-sans-serif, system-ui, sans-serif;
   --font-urbanist: "Urbanist", ui-sans-serif, system-ui, sans-serif;
