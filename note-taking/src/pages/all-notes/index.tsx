@@ -1,16 +1,26 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Plus, Tag, Clock, Trash2, Archive, ArrowLeft } from "lucide-react";
+import {
+  Plus,
+  Tag,
+  Clock,
+  Trash2,
+  Archive,
+  ArrowLeft,
+  Edit,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import NoteModal from "./note-model";
 import { Button } from "@/components/ui/button";
 import { useNotes } from "@/context/notes-context";
 import type { Notes } from "@/types";
+import EditNoteModal from "./note-model/edit-note-modal";
 
 export default function AllNotes() {
   const { notes, setNotes, archivedNotes, setArchivedNotes } = useNotes();
   const [selectedNote, setSelectedNote] = useState<number | null>(null);
-  const [showModal, setShowModal] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [searchParams] = useSearchParams();
 
   const tagFilter = searchParams.get("tag");
@@ -27,7 +37,7 @@ export default function AllNotes() {
     const updatedNotes = [...notes, note];
     setNotes(updatedNotes);
     setSelectedNote(note.id);
-    setShowModal(false);
+    setShowAddModal(false);
   };
 
   const handleDeleteNote = (id: number) => {
@@ -46,6 +56,14 @@ export default function AllNotes() {
     setNotes(updatedNotes);
     setArchivedNotes(updatedArchived);
     setSelectedNote(null);
+  };
+
+  const handleUpdateNote = (updatedNote: Notes) => {
+    const updated = notes.map((n) =>
+      n.id === updatedNote.id ? updatedNote : n
+    );
+    setNotes(updated);
+    setShowEditModal(false);
   };
 
   const handleGoBack = () => {
@@ -72,7 +90,7 @@ export default function AllNotes() {
         )}
 
         <Button
-          onClick={() => setShowModal(true)}
+          onClick={() => setShowAddModal(true)}
           className="w-full mb-4 py-6 text-lg bg-primary text-primary-foreground rounded-md flex items-center justify-center cursor-pointer gap-2 hover:opacity-90"
         >
           <Plus className="w-4 h-4" /> Create New Note
@@ -96,6 +114,7 @@ export default function AllNotes() {
                     ? "border-primary bg-accent"
                     : "border-transparent"
                 )}
+                aria-label={`Open note ${note.title}`}
               >
                 <h3 className="font-medium">{note.title}</h3>
                 <div className="flex flex-wrap gap-2 mt-1">
@@ -136,6 +155,13 @@ export default function AllNotes() {
               </button>
 
               <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setShowEditModal(true)}
+                  className="p-2 rounded-md hover:bg-accent"
+                  aria-label="Edit"
+                >
+                  <Edit className="w-5 h-5" />
+                </button>
                 <button
                   onClick={() => handleArchiveNote(selected.id)}
                   className="p-2 rounded-md hover:bg-accent"
@@ -183,8 +209,17 @@ export default function AllNotes() {
         {selected && (
           <>
             <button
+              onClick={() => setShowEditModal(true)}
+              className="w-full flex items-center justify-center gap-2 border rounded-md py-2 hover:bg-accent transition cursor-pointer"
+              aria-label="Edit note"
+            >
+              <Edit className="w-4 h-4" /> Edit Note
+            </button>
+
+            <button
               onClick={() => handleArchiveNote(selected.id)}
               className="w-full flex items-center justify-center gap-2 border rounded-md py-2 hover:bg-accent transition cursor-pointer"
+              aria-label="Archive note"
             >
               <Archive className="w-4 h-4" /> Archive Note
             </button>
@@ -192,6 +227,7 @@ export default function AllNotes() {
             <button
               onClick={() => handleDeleteNote(selected.id)}
               className="w-full flex items-center justify-center gap-2 border rounded-md py-2 hover:bg-destructive/10 cursor-pointer text-destructive border-destructive/50 transition"
+              aria-label="Delete note"
             >
               <Trash2 className="w-4 h-4" /> Delete Note
             </button>
@@ -199,8 +235,19 @@ export default function AllNotes() {
         )}
       </aside>
 
-      {showModal && (
-        <NoteModal onClose={() => setShowModal(false)} onAdd={handleAddNote} />
+      {showAddModal && (
+        <NoteModal
+          onClose={() => setShowAddModal(false)}
+          onAdd={handleAddNote}
+        />
+      )}
+
+      {showEditModal && selected && (
+        <EditNoteModal
+          note={selected}
+          onClose={() => setShowEditModal(false)}
+          onUpdate={handleUpdateNote}
+        />
       )}
     </div>
   );
