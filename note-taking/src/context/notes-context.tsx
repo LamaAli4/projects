@@ -5,19 +5,28 @@ import { getNotes, saveNotes } from "@/utils/storage-notes";
 interface NotesContextType {
   notes: Notes[];
   setNotes: React.Dispatch<React.SetStateAction<Notes[]>>;
+  archivedNotes: Notes[];
+  setArchivedNotes: React.Dispatch<React.SetStateAction<Notes[]>>;
 }
 
 const NotesContext = createContext<NotesContextType | undefined>(undefined);
 
 export function NotesProvider({ children }: { children: React.ReactNode }) {
   const [notes, setNotes] = useState<Notes[]>(() => getNotes());
+  const [archivedNotes, setArchivedNotes] = useState<Notes[]>(() => {
+    const saved = localStorage.getItem("archivedNotes");
+    return saved ? JSON.parse(saved) : [];
+  });
 
   useEffect(() => {
     saveNotes(notes);
-  }, [notes]);
+    localStorage.setItem("archivedNotes", JSON.stringify(archivedNotes));
+  }, [notes, archivedNotes]);
 
   return (
-    <NotesContext.Provider value={{ notes, setNotes }}>
+    <NotesContext.Provider
+      value={{ notes, setNotes, archivedNotes, setArchivedNotes }}
+    >
       {children}
     </NotesContext.Provider>
   );

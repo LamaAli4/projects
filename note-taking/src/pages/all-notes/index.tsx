@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Plus, Tag, Clock, Trash2, Archive } from "lucide-react";
+import { Plus, Tag, Clock, Trash2, Archive, ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import NoteModal from "./note-model";
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,7 @@ import { useNotes } from "@/context/notes-context";
 import type { Notes } from "@/types";
 
 export default function AllNotes() {
-  const { notes, setNotes } = useNotes();
+  const { notes, setNotes, archivedNotes, setArchivedNotes } = useNotes();
   const [selectedNote, setSelectedNote] = useState<number | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [searchParams] = useSearchParams();
@@ -36,9 +36,45 @@ export default function AllNotes() {
     setSelectedNote(null);
   };
 
+  const handleArchiveNote = (id: number) => {
+    const noteToArchive = notes.find((n) => n.id === id);
+    if (!noteToArchive) return;
+
+    const updatedNotes = notes.filter((n) => n.id !== id);
+    const updatedArchived = [...archivedNotes, noteToArchive];
+
+    setNotes(updatedNotes);
+    setArchivedNotes(updatedArchived);
+    setSelectedNote(null);
+  };
+
+  const handleGoBack = () => {
+    setSelectedNote(null);
+  };
+
+  const isMobileOrTablet =
+    typeof window !== "undefined" && window.innerWidth < 1024; // أقل من lg
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-4 h-full relative">
-      <aside className="md:col-span-2 lg:col-span-2 border-r pr-4">
+      {/* ✅ Sidebar: notes list */}
+      <aside
+        className={cn(
+          "md:col-span-2 lg:col-span-2 border-r pr-4 transition-all duration-300",
+          selected && isMobileOrTablet ? "hidden" : "block"
+        )}
+      >
+        {tagFilter && (
+          <div className="md:col-span-4 lg:col-span-6">
+            <h2 className="text-lg font-medium mb-4">
+              Notes tagged:
+              <span className="ml-2 px-2 py-0.5 rounded-md bg-primary/10 text-primary font-semibold">
+                {tagFilter}
+              </span>
+            </h2>
+          </div>
+        )}
+
         <Button
           onClick={() => setShowModal(true)}
           className="w-full mb-4 py-6 text-lg bg-primary text-primary-foreground rounded-md flex items-center justify-center cursor-pointer gap-2 hover:opacity-90"
@@ -86,9 +122,45 @@ export default function AllNotes() {
         )}
       </aside>
 
-      <main className="md:col-span-2 lg:col-span-3 p-4 overflow-y-auto">
+      {/* ✅ Note details */}
+      <main
+        className={cn(
+          "md:col-span-2 lg:col-span-3 p-4 overflow-y-auto",
+          selected && isMobileOrTablet ? "col-span-1" : ""
+        )}
+      >
         {selected ? (
           <>
+            {/* 🔙 Header actions for mobile */}
+            {isMobileOrTablet && (
+              <div className="flex items-center justify-between mb-4">
+                <button
+                  onClick={handleGoBack}
+                  className="p-2 rounded-md hover:bg-accent"
+                  aria-label="Go back"
+                >
+                  <ArrowLeft className="w-5 h-5" />
+                </button>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => handleArchiveNote(selected.id)}
+                    className="p-2 rounded-md hover:bg-accent"
+                    aria-label="Archive"
+                  >
+                    <Archive className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={() => handleDeleteNote(selected.id)}
+                    className="p-2 rounded-md text-destructive hover:bg-destructive/10 border border-destructive/30"
+                    aria-label="Delete"
+                  >
+                    <Trash2 className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+            )}
+
             <h2 className="text-2xl font-semibold mb-2">{selected.title}</h2>
 
             <div className="flex gap-2 mb-4 flex-wrap">
@@ -113,10 +185,14 @@ export default function AllNotes() {
         )}
       </main>
 
+      {/* ✅ Sidebar actions (desktop only) */}
       <aside className="hidden lg:flex flex-col gap-3 items-stretch justify-start p-4 border-l">
         {selected && (
           <>
-            <button className="w-full flex items-center justify-center gap-2 border rounded-md py-2 hover:bg-accent transition cursor-pointer">
+            <button
+              onClick={() => handleArchiveNote(selected.id)}
+              className="w-full flex items-center justify-center gap-2 border rounded-md py-2 hover:bg-accent transition cursor-pointer"
+            >
               <Archive className="w-4 h-4" /> Archive Note
             </button>
 
