@@ -1,95 +1,100 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Plus, Tag, Clock, Trash2, Archive } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Notes } from "@/types";
+import NoteModal from "./note-model";
+import { Button } from "@/components/ui/button";
+import { getNotes, saveNotes } from "@/utils/storage-notes";
 
 export default function AllNotes() {
-  const [selectedNote, setSelectedNote] = useState<number | null>(1);
+  const [selectedNote, setSelectedNote] = useState<number | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [notes, setNotes] = useState<Notes[]>(() => getNotes());
 
-  const notes: Notes[] = [
-    {
-      id: 1,
-      title: "React Performance Optimization",
-      content: `Key performance optimization techniques:\n
-1. Code Splitting\n- Use React.lazy() for route-based splitting\n- Implement dynamic imports for heavy components\n
-2. Memoization\n- useMemo for expensive calculations\n- useCallback for function props\n- React.memo for component optimization\n
-3. Virtual List Implementation\n- Use react-window for long lists\n- Implement infinite scrolling\n\nTODO: Benchmark current application and identify bottlenecks.`,
-      tags: ["Dev", "React"],
-      date: "29 Oct 2024",
-    },
-    {
-      id: 2,
-      title: "Japan Travel Planning",
-      content:
-        "Plan itinerary for Kyoto and Tokyo, book accommodations, and list must-try restaurants.",
-      tags: ["Travel", "Personal"],
-      date: "28 Oct 2024",
-    },
-    {
-      id: 3,
-      title: "Favorite Pasta Recipes",
-      content:
-        "Carbonara, Pesto, and Alfredo recipes with ingredients and steps.",
-      tags: ["Cooking", "Recipes"],
-      date: "27 Oct 2024",
-    },
-  ];
+  useEffect(() => {
+    saveNotes(notes);
+  }, [notes]);
 
   const selected = notes.find((n) => n.id === selectedNote);
 
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-4 h-full">
-      <aside className="md:col-span-2 lg:col-span-2 border-r pr-4">
-        <button className="w-full mb-4 py-2 bg-primary text-primary-foreground rounded-md flex items-center justify-center gap-2 hover:opacity-90">
-          <Plus className="w-4 h-4" /> Create New Note
-        </button>
+  const handleAddNote = (note: Notes) => {
+    const updatedNotes = [...notes, note];
+    setNotes(updatedNotes);
+    setSelectedNote(note.id);
+    setShowModal(false);
+  };
 
-        <div className="flex flex-col gap-3">
-          {notes.map((note) => (
-            <button
-              key={note.id}
-              onClick={() => setSelectedNote(note.id)}
-              className={cn(
-                "text-left p-3 rounded-md transition border hover:bg-accent",
-                selectedNote === note.id
-                  ? "border-primary bg-accent"
-                  : "border-transparent"
-              )}
-            >
-              <h3 className="font-medium">{note.title}</h3>
-              <div className="flex flex-wrap gap-2 mt-1">
-                {note.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="text-xs bg-muted px-2 py-0.5 rounded-md text-muted-foreground"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-              <p className="text-xs text-muted-foreground mt-1">
-                <Clock className="w-3 h-3 inline mr-1" />
-                {note.date}
-              </p>
-            </button>
-          ))}
-        </div>
+  const handleDeleteNote = (id: number) => {
+    const updatedNotes = notes.filter((n) => n.id !== id);
+    setNotes(updatedNotes);
+    setSelectedNote(null);
+  };
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-4 h-full relative">
+      <aside className="md:col-span-2 lg:col-span-2 border-r pr-4">
+        <Button
+          onClick={() => setShowModal(true)}
+          className="w-full mb-4 py-6 text-lg bg-primary text-primary-foreground rounded-md flex items-center justify-center
+          cursor-pointer gap-2 hover:opacity-90"
+        >
+          <Plus className="w-4 h-4" /> Create New Note
+        </Button>
+
+        {notes.length === 0 ? (
+          <p className="text-muted-foreground text-center mt-10">
+            No notes yet. Click “Create New Note” to get started!
+          </p>
+        ) : (
+          <div className="flex flex-col gap-3">
+            {notes.map((note) => (
+              <button
+                key={note.id}
+                onClick={() => setSelectedNote(note.id)}
+                className={cn(
+                  "text-left p-3 rounded-md transition border hover:bg-accent",
+                  selectedNote === note.id
+                    ? "border-primary bg-muted"
+                    : "border-transparent"
+                )}
+              >
+                <h3 className="font-medium">{note.title}</h3>
+                <div className="flex flex-wrap gap-2 mt-1">
+                  {note.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="text-xs bg-muted px-2 py-0.5 rounded-md text-muted-foreground"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
+                  <Clock className="w-3 h-3" />
+                  {note.date}
+                </p>
+              </button>
+            ))}
+          </div>
+        )}
       </aside>
 
       <main className="md:col-span-2 lg:col-span-3 p-4 overflow-y-auto">
         {selected ? (
           <>
-            <h2 className="text-xl font-semibold mb-2">{selected.title}</h2>
-            <div className="flex gap-2 mb-4">
+            <h2 className="text-2xl font-semibold mb-2">{selected.title}</h2>
+
+            <div className="flex gap-2 mb-4 flex-wrap">
               {selected.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="flex items-center gap-1 text-sm text-muted-foreground"
+                  className="flex items-center gap-1 text-sm text-muted-foreground bg-muted px-2 py-1 rounded-md"
                 >
                   <Tag className="w-3 h-3" /> {tag}
                 </span>
               ))}
             </div>
+
             <p className="text-sm whitespace-pre-line leading-relaxed text-muted-foreground">
               {selected.content}
             </p>
@@ -102,13 +107,25 @@ export default function AllNotes() {
       </main>
 
       <aside className="hidden lg:flex flex-col gap-3 items-stretch justify-start p-4 border-l">
-        <button className="w-full flex items-center justify-center gap-2 border rounded-md py-2 hover:bg-accent">
-          <Archive className="w-4 h-4" /> Archive Note
-        </button>
-        <button className="w-full flex items-center justify-center gap-2 border rounded-md py-2 hover:bg-destructive/10 text-destructive border-destructive/50">
-          <Trash2 className="w-4 h-4" /> Delete Note
-        </button>
+        {selected && (
+          <>
+            <button className="w-full flex items-center justify-center gap-2 border rounded-md py-2 hover:bg-accent transition cursor-pointer">
+              <Archive className="w-4 h-4" /> Archive Note
+            </button>
+
+            <button
+              onClick={() => handleDeleteNote(selected.id)}
+              className="w-full flex items-center justify-center gap-2 border rounded-md py-2 hover:bg-destructive/10 cursor-pointer text-destructive border-destructive/50 transition"
+            >
+              <Trash2 className="w-4 h-4" /> Delete Note
+            </button>
+          </>
+        )}
       </aside>
+
+      {showModal && (
+        <NoteModal onClose={() => setShowModal(false)} onAdd={handleAddNote} />
+      )}
     </div>
   );
 }
