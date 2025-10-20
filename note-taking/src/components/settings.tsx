@@ -7,13 +7,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Settings, Check } from "lucide-react";
+import { Settings, Check, LogOut } from "lucide-react";
 import ThemeToggle from "./theme-toggle";
+import { useAuth } from "@/context/auth-context";
 
 export default function SettingsDropdown() {
   const [font, setFont] = useState(
     () => localStorage.getItem("font") || "Poppins"
   );
+  const { isLogged, logout } = useAuth();
 
   useEffect(() => {
     let fontValue = "var(--font-poppins)";
@@ -80,6 +82,19 @@ export default function SettingsDropdown() {
             )}
           </div>
         </DropdownMenuItem>
+
+        {isLogged && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onSelect={logout}
+              className="text-red-500 hover:text-red-600 hover:bg-red-50 cursor-pointer"
+            >
+              <LogOut className="w-4 h-4 mr-2" />
+              Logout
+            </DropdownMenuItem>
+          </>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

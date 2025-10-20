@@ -6,6 +6,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "@/context/theme-context";
 import { RoutesSection } from "./router/section";
 import { NotesProvider } from "./context/notes-context";
+import { AuthProvider } from "./context/auth-context";
 
 const router = createBrowserRouter(RoutesSection);
 
@@ -13,9 +14,11 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <ThemeProvider>
       <NotesProvider>
-        <Suspense fallback={<Loading />}>
-          <RouterProvider router={router} />
-        </Suspense>
+        <AuthProvider>
+          <Suspense fallback={<Loading />}>
+            <RouterProvider router={router} />
+          </Suspense>
+        </AuthProvider>
       </NotesProvider>
     </ThemeProvider>
   </React.StrictMode>
