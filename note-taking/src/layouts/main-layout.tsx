@@ -13,9 +13,9 @@ export default function MainLayout() {
         <div className="p-6 border-b">
           <Header onMenuClick={() => setSidebarOpen(true)} />
         </div>
-        <div className="flex-1 p-6">
+        <main className="flex-1 p-6">
           <Outlet />
-        </div>
+        </main>
       </main>
     </div>
   );

@@ -3,9 +3,10 @@ import { X } from "lucide-react";
 
 interface HeaderProps {
   onClose: () => void;
+  title?: string;
 }
 
-export default function NoteModalHeader({ onClose }: HeaderProps) {
+export default function NoteModalHeader({ onClose, title }: HeaderProps) {
   return (
     <>
       <Button
@@ -16,7 +17,7 @@ export default function NoteModalHeader({ onClose }: HeaderProps) {
       </Button>
 
       <h2 className="text-lg font-semibold mb-4 text-center">
-        Create New Note
+        {title || "Create New Note"} 
       </h2>
     </>
   );

@@ -60,8 +60,7 @@ export default function EditNoteModal({
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50">
       <div className="bg-background p-8 rounded-xl shadow-xl w-[95%] max-w-2xl h-[70vh] overflow-y-auto relative transition-all">
-        <NoteModalHeader onClose={onClose} />
-
+        <NoteModalHeader onClose={onClose} title="Edit Note" />
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
           <div className="flex flex-col gap-1">
             <label className="text-sm font-medium text-foreground/90">
