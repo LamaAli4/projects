@@ -1,4 +1,4 @@
-import  {
+import {
   createContext,
   useContext,
   useEffect,
@@ -10,7 +10,7 @@ interface AuthContextType {
   isLogged: boolean;
   login: (username: string, password: string) => boolean;
   logout: () => void;
-  loading: boolean;
+  loading: boolean; 
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -19,7 +19,7 @@ const AUTH_KEY = "isLogged";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLogged, setIsLogged] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); 
 
   const VALID_USERNAME = "Lama1234";
   const VALID_PASSWORD = "lama123";
@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (savedState === "true") {
       setIsLogged(true);
     }
-    setLoading(false);
+    setLoading(false); 
   }, []);
 
   const login = (username: string, password: string) => {
@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         isLogged,
         login,
         logout,
-        loading,
+        loading, // ✅
       }}
     >
       {children}
