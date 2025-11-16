@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz App</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <div class="start-screen">
+        <h1>Quiz App</h1>
+        <div class="category-container">
+          <h2>Select a Category:</h2>
+          <div class="categories">
+            <button class="category" data-category="technology">
+              Technology
+            </button>
+            <button class="category" data-category="science">Science</button>
+            <button class="category" data-category="history">History</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="quiz-container hide">
+        <div class="header">
+          <div class="category-name">Category: <span></span></div>
+          <div class="progress">
+            Question <span class="current">1</span>/<span class="total"
+              >10</span
+            >
+          </div>
+          <div class="score">Score: <span>0</span></div>
+        </div>
+
+        <div class="question-container">
+          <h2 class="question"></h2>
+          <div class="options"></div>
+        </div>
+
+        <button class="next-btn">Next Question</button>
+      </div>
+
+      <div class="result-container hide">
+        <h2>Quiz Complete!</h2>
+        <div class="result">
+          <p>Your Score: <span class="final-score">0</span></p>
+          <p>Total Questions: <span class="total-questions">0</span></p>
+        </div>
+        <button class="restart-btn">Try Another Category</button>
+      </div>
+    </div>
+    <script type="module" src="/js/index.js"></script>
+  </body>
+</html>
