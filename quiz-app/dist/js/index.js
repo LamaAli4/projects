@@ -13,7 +13,7 @@ const scoreSpan = document.querySelector(".score span");
 const finalScoreSpan = document.querySelector(".final-score");
 const totalQuestionsResultSpan = document.querySelector(".total-questions");
 const restartButton = document.querySelector(".restart-btn");
-let currentCategory = "";
+let currentCategory = "technology";
 let currentQuestionIndex = 0;
 let score = 0;
 let questions = [];
@@ -25,50 +25,51 @@ function startQuiz(category) {
     startScreen.classList.add("hide");
     quizContainer.classList.remove("hide");
     resultContainer.classList.add("hide");
-    categoryNameSpan.textContent =
-        category.charAt(0).toUpperCase() + category.slice(1);
-    totalQuestionsSpan.textContent = questions.length;
-    scoreSpan.textContent = score;
+    categoryNameSpan.textContent = category;
+    totalQuestionsSpan.textContent = String(questions.length);
+    scoreSpan.textContent = String(score);
     showQuestion();
 }
 function showQuestion() {
     const question = questions[currentQuestionIndex];
-    currentQuestionSpan.textContent = currentQuestionIndex + 1;
+    currentQuestionSpan.textContent = String(currentQuestionIndex + 1);
     questionElement.textContent = question.question;
     optionsContainer.innerHTML = "";
     question.options.forEach((option, index) => {
         const button = document.createElement("button");
         button.classList.add("option");
         button.textContent = option;
-        button.addEventListener("click", () => selectOption(index));
+        button.onclick = () => selectOption(index);
         optionsContainer.appendChild(button);
     });
     nextButton.disabled = true;
 }
 function selectOption(selectedIndex) {
-    const options = optionsContainer.querySelectorAll(".option");
+    const optionButtons = optionsContainer.querySelectorAll(".option");
     const question = questions[currentQuestionIndex];
-    options.forEach((option) => (option.disabled = true));
+    optionButtons.forEach((btn) => (btn.disabled = true));
     if (selectedIndex === question.correct) {
-        options[selectedIndex].classList.add("correct");
+        optionButtons[selectedIndex].classList.add("correct");
         score++;
-        scoreSpan.textContent = score;
+        scoreSpan.textContent = String(score);
     }
     else {
-        options[selectedIndex].classList.add("incorrect");
-        options[question.correct].classList.add("correct");
+        optionButtons[selectedIndex].classList.add("incorrect");
+        optionButtons[question.correct].classList.add("correct");
     }
     nextButton.disabled = false;
 }
 function showResult() {
     quizContainer.classList.add("hide");
     resultContainer.classList.remove("hide");
-    finalScoreSpan.textContent = score;
-    totalQuestionsResultSpan.textContent = questions.length;
+    finalScoreSpan.textContent = String(score);
+    totalQuestionsResultSpan.textContent = String(questions.length);
 }
 categoryButtons.forEach((button) => {
     button.addEventListener("click", () => {
-        startQuiz(button.dataset.category);
+        const category = button.dataset
+            .category;
+        startQuiz(category);
     });
 });
 nextButton.addEventListener("click", () => {

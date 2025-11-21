@@ -1,4 +1,6 @@
-export const quizData = {
+import { QuizData } from "../types";
+
+export const quizData: QuizData = {
   technology: [
     {
       question: "What does CPU stand for?",
