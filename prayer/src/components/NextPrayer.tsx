@@ -56,7 +56,7 @@ const NextPrayer: React.FC<NextPrayerProps> = ({ prayerTimes }) => {
 
       // If no prayer is found for today, use Fajr for the next day
       if (nextPrayer === null) {
-        nextPrayer = prayerTimesInMinutes.Fajr + 24 * 60; // Add 24 hours for next day
+        nextPrayer = prayerTimesInMinutes.Fajr + 24 * 60;
         nextPrayerName = 'Fajr (Tomorrow)';
       }
 

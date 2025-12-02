@@ -31,14 +31,14 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
   const handleContinentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedContinent = e.target.value;
     setContinent(selectedContinent);
-    setCountry(''); // Reset country when continent changes
-    setCity(''); // Reset city when continent changes
+    setCountry('');
+    setCity(''); 
   };
 
   const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedCountry = e.target.value;
     setCountry(selectedCountry);
-    setCity(''); // Reset city when country changes
+    setCity(''); 
   };
 
   return (
